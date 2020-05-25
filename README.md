@@ -4,6 +4,7 @@ This repo contains the projects you'll work on for the first half of STEP.
 This work is based on the [Google Software Product Sprint](https://g.co/softwareproductsprint) program.
 
 To get started:
+ - just trying to make a change
 
 - Login to [Google Cloud Shell](https://ssh.cloud.google.com/cloudshell/editor)
 - Clone this repo: `cd; git clone https://github.com/googleinterns/step.git`
