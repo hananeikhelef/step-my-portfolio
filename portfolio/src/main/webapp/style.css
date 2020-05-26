@@ -2,7 +2,6 @@
   margin-left: auto;
   margin-right: auto;
   width: 650px;
-  background-color: grey;
 }
 
 #greeting-container {
@@ -76,5 +75,4 @@ footer {
    background-color: black;
    color: white;
    text-align: center;
-
 }
