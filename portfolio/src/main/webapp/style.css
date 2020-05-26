@@ -2,6 +2,7 @@
   margin-left: auto;
   margin-right: auto;
   width: 650px;
+  background-color: grey;
 }
 
 #greeting-container {
@@ -20,7 +21,6 @@
     height: 100%;
     display: block;
     margin: 0 auto;
-    /* background-color: red; */
 }
 
 .logo_container{
