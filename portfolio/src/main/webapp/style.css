@@ -2,6 +2,7 @@
   margin-left: auto;
   margin-right: auto;
   width: 650px;
+  text-align: center;
 }
 
 #greeting-container {
@@ -68,7 +69,7 @@
 }
 
 footer {
-   position: fixed;
+     position: fixed;
    left: 0;
    bottom: 0;
    width: 100%;
@@ -76,3 +77,221 @@ footer {
    color: white;
    text-align: center;
 }
+* {box-sizing:border-box}
+
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+.container {
+  position: relative;
+  width: 95%;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background-color: #008CBA;
+  overflow: hidden;
+  width: 95%;
+  height:0;
+  transition: .5s ease;
+}
+
+.container:hover .overlay {
+  bottom: 0;
+  height: 100%;
+}
+
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 5px;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+body {
+  background: url(/images/portfolio-background-header.jpg);
+}
+
+#content {
+	margin-left: auto;
+	margin-right: auto;
+	width: 650px;
+	text-align: center;
+}
+
+#greeting-container {
+	margin-top: 20px;
+}
+
+.header {
+	width: 100%;
+	height: 80px;
+	display: block;
+	background-color: #101010;
+}
+
+.inner_header {
+	width: 1000px;
+	height: 100%;
+	display: block;
+	margin: 0 auto;
+}
+
+.logo_container {
+	height: 100%;
+	display: table;
+	float: left;
+}
+
+.logo_container h1 {
+	color: white;
+	height: 100%;
+	display: table-cell;
+	vertical-align: middle;
+	font-family: 'Montserrat';
+	font-size: 32px;
+	font-weight: 200;
+}
+
+.logo_container h1 span {
+	font-weight: 800;
+}
+
+.navigation {
+	float: right;
+	height: 100%;
+}
+
+.navigation a {
+	height: 100%;
+	display: table;
+	float: left;
+	padding: 0px 20px;
+}
+
+.navigation a li {
+	display: table-cell;
+	vertical-align: middle;
+	height: 100%;
+	color: white;
+	font-family: 'Montserrat';
+	font-size: 16px;
+}
+
+.navigation a:last-child {
+	padding-right: 0;
+}
+
+footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: black;
+	color: white;
+	text-align: center;
+}
+
+* {
+	box-sizing: border-box
+}
+
+.slideshow-container {
+	max-width: 1000px;
+	position: relative;
+	margin: auto;
+}
+
+.container {
+	position: relative;
+	width: 95%;
+}
+
+.image {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.overlay {
+	position: absolute;
+	bottom: 100%;
+	left: 0;
+	right: 0;
+	background-color: #008CBA;
+	overflow: hidden;
+	width: 95%;
+	height: 0;
+	transition: .5s ease;
+}
+
+.container:hover .overlay {
+	bottom: 0;
+	height: 100%;
+}
+
+.text {
+	color: white;
+	font-size: 20px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+.column {
+	float: left;
+	width: 33.33%;
+	padding: 5px;
+}
+
+.row::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+body {
+	background: url(/images/portfolio-background-header.jpg);
+}
+
