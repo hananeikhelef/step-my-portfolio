@@ -21,7 +21,7 @@ function toggleClass(){
 	element.classList.toggle("active")
 }
 /**
- * Fetches a random quote from the server and adds it to the DOM.
+ * Fetches a message from the server and adds it to the DOM.
  */
 function getMessage() {
   fetch('/data').then(response => response.text()).then((message) => {
