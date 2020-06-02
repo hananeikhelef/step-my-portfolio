@@ -13,6 +13,7 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class DataServlet extends HttpServlet {
   }
 
 
-//   @Override
+  @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
     String json = gson.toJson(messages);
