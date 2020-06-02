@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
+
+ /** Toggle to show comment section in the contact page */
  
 function toggleClass(){
 	var element = document.getElementById('contact');
@@ -27,4 +26,29 @@ function getMessage() {
   fetch('/data').then(response => response.text()).then((message) => {
     document.getElementById('message-container').innerText = message;
   });
+}
+
+/**
+ * Fetches stats from the servers and adds them to the DOM.
+ */
+async function getData() {
+  fetch('/data').then(response => response.json()).then((stats) => {
+    // stats is an object, not a string, so we have to
+    // reference its fields to create HTML content
+
+    const statsListElement = document.getElementById('message-container');
+    statsListElement.innerHTML = '';
+
+    for(const x in stats){
+        statsListElement.appendChild(
+        createListElement(stats[x]));
+    }
+  });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
