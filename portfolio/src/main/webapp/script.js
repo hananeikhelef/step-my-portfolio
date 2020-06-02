@@ -20,3 +20,11 @@ function toggleClass(){
 	var element = document.getElementById('contact');
 	element.classList.toggle("active")
 }
+/**
+ * Fetches a message from the server and adds it to the DOM.
+ */
+function getMessage() {
+  fetch('/data').then(response => response.text()).then((message) => {
+    document.getElementById('message-container').innerText = message;
+  });
+}
