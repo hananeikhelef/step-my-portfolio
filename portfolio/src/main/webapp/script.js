@@ -28,3 +28,28 @@ function getMessage() {
     document.getElementById('message-container').innerText = message;
   });
 }
+
+/**
+ * Fetches stats from the servers and adds them to the DOM.
+ */
+async function getStats() {
+  fetch('/data').then(response => response.json()).then((stats) => {
+    // stats is an object, not a string, so we have to
+    // reference its fields to create HTML content
+
+    const statsListElement = document.getElementById('message-container');
+    statsListElement.innerHTML = '';
+
+    for(const x in stats){
+        statsListElement.appendChild(
+        createListElement(stats[x]));
+    }
+  });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
