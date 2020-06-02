@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to th.
- */
+
+ /** Toggle to show comment section in the contact page */
  
 function toggleClass(){
 	var element = document.getElementById('contact');
