@@ -45,4 +45,15 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(json);
 
   }
+
+/** doPost adds new messages to server data*/
+   @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      String value = request.getParameter("message");
+
+      messages.add(value);
+
+    // Redirect back to the contact page.
+    response.sendRedirect("/contact.html");
+  }
 }
