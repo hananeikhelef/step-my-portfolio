@@ -21,6 +21,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.sps.data.Message;
 
 /** Servlet that returns comments from server */
 @WebServlet("/data")
@@ -39,17 +46,50 @@ public class DataServlet extends HttpServlet {
 /** doGet Responds with all comments, serialized as json*/
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+    Query query = new Query("messageEntity").addSort("timestamp", SortDirection.DESCENDING);
+
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    ArrayList<Message> messagesList = new ArrayList<>();
+
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String content = (String) entity.getProperty("content");
+      long timestamp = (long) entity.getProperty("timestamp");
+
+      Message message = new Message(id, content, timestamp);
+      messagesList.add(message);
+    }
+
+    // Gson gson = new Gson();
+
+    // response.setContentType("application/json;");
+    // response.getWriter().println(gson.toJson(tasks));
+
     Gson gson = new Gson();
-    String json = gson.toJson(messages);
+    String json = gson.toJson(messagesList);
     response.setContentType("application/json");
-    response.getWriter().println(json);
+    response.getWriter().println(gson.toJson(json));
 
   }
 
-/** doPost adds new messages to server data*/
+   /** doPost adds new messages to server data*/
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String value = request.getParameter("message");
+      long timestamp = System.currentTimeMillis();
+
+      Entity messageEntity = new Entity("messageEntity");
+      messageEntity.setProperty("title", content);
+      messageEntity.setProperty("timestamp", timestamp);
+
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      
+      datastore.put(messageEntity);
+
 
       messages.add(value);
 
