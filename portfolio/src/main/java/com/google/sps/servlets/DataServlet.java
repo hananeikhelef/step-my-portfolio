@@ -33,21 +33,11 @@ import com.google.sps.data.Message;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
     
-    private ArrayList<String> messages = new ArrayList<>();
-
-/** init add hard coded messages */
-  @Override
-  public void init() {
-    messages.add("Good content but i don't like the design");
-    messages.add("Design is bad");
-    messages.add("It is much easier to apologise than it is to get permission. - Grace Hopper");
-  }
-
 /** doGet Responds with all comments, serialized as json*/
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
-    Query query = new Query("messageEntity").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query("Message").addSort("timestamp", SortDirection.DESCENDING);
 
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -64,11 +54,6 @@ public class DataServlet extends HttpServlet {
       messagesList.add(message);
     }
 
-    // Gson gson = new Gson();
-
-    // response.setContentType("application/json;");
-    // response.getWriter().println(gson.toJson(tasks));
-
     Gson gson = new Gson();
     String json = gson.toJson(messagesList);
     response.setContentType("application/json");
@@ -76,22 +61,19 @@ public class DataServlet extends HttpServlet {
 
   }
 
-   /** doPost adds new messages to server data*/
+   /** doPost adds new messages to server data and stores it*/
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String value = request.getParameter("message");
+      String content = request.getParameter("message");
       long timestamp = System.currentTimeMillis();
 
-      Entity messageEntity = new Entity("messageEntity");
-      messageEntity.setProperty("title", content);
+      Entity messageEntity = new Entity("Message");
+      messageEntity.setProperty("content", content);
       messageEntity.setProperty("timestamp", timestamp);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       
       datastore.put(messageEntity);
-
-
-      messages.add(value);
 
     // Redirect back to the contact page.
     response.sendRedirect("/contact.html");

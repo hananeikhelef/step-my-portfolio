@@ -1,5 +1,8 @@
 package com.google.sps.data;
 
+
+/** A message in the comment section */
+
 public final class  Message{
 
   private final long id;
