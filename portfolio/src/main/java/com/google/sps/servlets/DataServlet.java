@@ -64,7 +64,7 @@ public class DataServlet extends HttpServlet {
    /** doPost adds new messages to server data and stores it*/
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String content = request.getParameter("message");
+      String content = request.getParameter("content");
       long timestamp = System.currentTimeMillis();
 
       Entity messageEntity = new Entity("Message");
