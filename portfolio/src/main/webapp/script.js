@@ -22,26 +22,22 @@ function toggleClass(){
 /**
  * Fetches a message from the server and adds it to the DOM.
  */
-function getMessage() {
-  fetch('/data').then(response => response.text()).then((message) => {
-    document.getElementById('message-container').innerText = message;
-  });
-}
+// function getMessage() {
+//   fetch('/data').then(response => response.text()).then((message) => {
+//     document.getElementById('message-container').innerText = message;
+//   });
+// }
 
 /**
  * Fetches stats from the servers and adds them to the DOM.
  */
 async function getData() {
-  fetch('/data').then(response => response.json()).then((stats) => {
-    // stats is an object, not a string, so we have to
-    // reference its fields to create HTML content
-
-    const statsListElement = document.getElementById('message-container');
-    statsListElement.innerHTML = '';
-
-    for(const x in stats){
-        statsListElement.appendChild(
-        createListElement(stats[x]));
+  fetch('/data').then(response => response.json()).then((tasks) => {
+    const taskListElement = document.getElementById('message-container');    
+    taskListElement.innerHTML="";
+    
+    for(var i = 0; i < tasks.length; i++){
+        taskListElement.appendChild(createListElement(tasks));
     }
   });
 }
@@ -49,6 +45,31 @@ async function getData() {
 /** Creates an <li> element containing text. */
 function createListElement(text) {
   const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
+  liElement.textContent =  text.content;
+    return liElement;
+//   const taskElement = document.createElement('li');
+//   taskElement.className = 'task';
+
+//   const titleElement = document.createElement('span');
+//   titleElement.innerText = task.title;
+
+//   const deleteButtonElement = document.createElement('button');
+//   deleteButtonElement.innerText = 'Delete';
+//   deleteButtonElement.addEventListener('click', () => {
+//     deleteTask(task);
+
+//     // Remove the task from the DOM.
+//     taskElement.remove();
+//   });
+
+//   taskElement.appendChild(titleElement);
+//   taskElement.appendChild(deleteButtonElement);
+//   return taskElement;
+}
+
+/** Tells the server to delete the task. */
+function deleteTask(message) {
+  const params = new URLSearchParams();
+  params.append('id', message);
+  fetch('/delete-data', {method: 'POST', body: params});
 }
