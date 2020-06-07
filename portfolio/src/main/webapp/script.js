@@ -36,8 +36,10 @@ async function getData() {
     const taskListElement = document.getElementById('message-container');    
     taskListElement.innerHTML="";
     
-    for(var i = 0; i < tasks.length; i++){
-        taskListElement.appendChild(createListElement(tasks));
+    for(const x in tasks){
+        if(tasks[x].content !== undefined){
+            taskListElement.appendChild(createListElement(tasks[x]));
+        }
     }
   });
 }
@@ -45,7 +47,9 @@ async function getData() {
 /** Creates an <li> element containing text. */
 function createListElement(text) {
   const liElement = document.createElement('li');
-  liElement.textContent =  text.content;
+  if(text.content !== undefined){
+        liElement.textContent =  text.content;
+  }
     return liElement;
 //   const taskElement = document.createElement('li');
 //   taskElement.className = 'task';
