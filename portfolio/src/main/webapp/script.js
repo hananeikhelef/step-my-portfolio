@@ -44,8 +44,8 @@ function createListElement(text) {
   deleteButtonElement.innerText = 'Delete';
   deleteButtonElement.addEventListener('click', () => {
     deleteMessage(text);
-
-    // Remove the task from the DOM.
+    
+   // Remove the message from the DOM
     messageElement.remove();
   });
 
