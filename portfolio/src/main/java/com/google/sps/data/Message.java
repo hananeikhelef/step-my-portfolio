@@ -6,6 +6,7 @@ public final class  Message{
   private final long id;
   private final String content;
   private final long timestamp;
+  private final String userEmail;
 
    /**
    * @param id         datastore-generated unique id for this comment.

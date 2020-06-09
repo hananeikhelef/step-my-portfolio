@@ -16,11 +16,14 @@ package com.google.sps.servlets;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+
 
 @WebServlet("/authentication")
 public class AuthenticationServlet extends HttpServlet {
@@ -31,18 +34,32 @@ public class AuthenticationServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
-      String userEmail = userService.getCurrentUser().getEmail();
+      String userEmail = userService.getCurrentUser().getEmail(); // get user's email
       String urlToRedirectToAfterUserLogsOut = "/";
-      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
+      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut); // redirect to contact page
 
-      response.getWriter().println("<p>Hello " + userEmail + "!</p>");
-      response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
+      String[] array = {userEmail, logoutUrl};
+
+      response.setStatus(200); // request recived 
+      Gson gson = new Gson();
+      String json = gson.toJson(array);
+
+      response.setContentType("application/json");
+      response.getWriter().println(json);
+
     } else {
       String urlToRedirectToAfterUserLogsIn = "/";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
-      response.getWriter().println("<p>Hello stranger.</p>");
-      response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
+      response.setStatus(401); //401 Unauthorized
+      
+      Gson gson = new Gson();
+      String json = gson.toJson(loginUrl);
+
+      response.setContentType("application/json");
+      response.getWriter().println(json);
+
+
     }
   }
 }

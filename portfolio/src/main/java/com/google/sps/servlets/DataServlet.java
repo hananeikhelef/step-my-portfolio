@@ -49,8 +49,9 @@ public class DataServlet extends HttpServlet {
       long id = entity.getKey().getId();
       String content = (String) entity.getProperty("content");
       long timestamp = (long) entity.getProperty("timestamp");
+      String userEmail = (String) entity.getProperty("userEmail");
 
-      Message message = new Message(id, content, timestamp);
+      Message message = new Message(id, content, timestamp, userEmail);
       messagesList.add(message);
     }
 
