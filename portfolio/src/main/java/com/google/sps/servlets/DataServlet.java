@@ -43,7 +43,7 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    ArrayList<Message> messagesList = new ArrayList<>();
+    ArrayList<Message> messagesList = new ArrayList<Message>();
 
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
@@ -56,8 +56,9 @@ public class DataServlet extends HttpServlet {
 
     Gson gson = new Gson();
     String json = gson.toJson(messagesList);
+
     response.setContentType("application/json");
-    response.getWriter().println(gson.toJson(json));
+    response.getWriter().println(json);
 
   }
 
