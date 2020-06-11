@@ -59,3 +59,25 @@ function deleteMessage(message) {
   params.append('id', message);
   fetch('/delete-data', {method: 'POST', body: params});
 }
+
+async function comment() {
+    const res = await fetch('/authentication');
+    const url = await res.json(); 
+
+    const samar = document.querySelector("#button");
+    
+    if(res.status === 200){
+          samar.href=url[0];
+        console.log("hello  in 200 ", url[0], url[1]);
+
+    }
+    else if(res.status === 403){
+         console.log("hello  in 403 ", url[0]);
+        samar.href = url[0];                                     
+    }
+}
+
+window.onload = function(){
+    getData();
+     comment()
+}

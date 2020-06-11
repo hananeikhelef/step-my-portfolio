@@ -13,7 +13,8 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
-
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -28,6 +29,9 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.sps.data.Message;
+import com.google.sps.servlets.AuthenticationServlet;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 /** Servlet that returns comments from server */
 @WebServlet("/data")
@@ -66,18 +70,26 @@ public class DataServlet extends HttpServlet {
    /** doPost adds new messages to server data and stores it*/
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
+    if (userService.isUserLoggedIn()) {
       String content = request.getParameter("content");
       long timestamp = System.currentTimeMillis();
+      String email = userService.getCurrentUser().getEmail();
+
 
       Entity messageEntity = new Entity("Message");
       messageEntity.setProperty("content", content);
       messageEntity.setProperty("timestamp", timestamp);
+      messageEntity.setProperty("userEmail", email);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      
-      datastore.put(messageEntity);
+            datastore.put(messageEntity);
+            response.sendRedirect("/contact.html");
 
-    // Redirect back to the contact page.
-    response.sendRedirect("/contact.html");
+
+    } else {
+                    response.sendRedirect("/contact.html");
+                    return;
+    }
   }
 }
