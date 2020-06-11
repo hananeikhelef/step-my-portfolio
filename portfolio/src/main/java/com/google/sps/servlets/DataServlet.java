@@ -13,15 +13,11 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import java.util.ArrayList;
-import java.io.IOException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -32,6 +28,11 @@ import com.google.sps.data.Message;
 import com.google.sps.servlets.AuthenticationServlet;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import java.io.IOException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns comments from server */
 @WebServlet("/data")
@@ -83,13 +84,13 @@ public class DataServlet extends HttpServlet {
       messageEntity.setProperty("userEmail", email);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-            datastore.put(messageEntity);
-            response.sendRedirect("/contact.html");
+      datastore.put(messageEntity);
+      response.sendRedirect("/contact.html");
 
 
     } else {
-                    response.sendRedirect("/contact.html");
-                    return;
+      response.sendRedirect("/contact.html");
+      return;
     }
   }
 }
