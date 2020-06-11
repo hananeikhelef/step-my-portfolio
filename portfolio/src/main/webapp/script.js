@@ -61,19 +61,16 @@ function deleteMessage(message) {
 }
 
 async function comment() {
-    const res = await fetch('/authentication');
-    const url = await res.json(); 
+    const respone = await fetch('/authentication');
+    const url = await respone.json(); 
 
-    const samar = document.querySelector("#button");
+    const sign_in = document.querySelector("#button");
     
-    if(res.status === 200){
-          samar.href=url[0];
-        console.log("hello  in 200 ", url[0], url[1]);
-
+    if(respone.status === 200){ // sends user to log in
+          sign_in.href=url[0];
     }
-    else if(res.status === 403){
-         console.log("hello  in 403 ", url[0]);
-        samar.href = url[0];                                     
+    else if(respone.status === 403){ //  redirect user to contact page
+        sign_in.href = url[0];                                     
     }
 }
 
