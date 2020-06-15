@@ -69,6 +69,5 @@ function createMap() {
 
 window.onload = function(){
     getData();
-    comment();
     createMap();
 }
