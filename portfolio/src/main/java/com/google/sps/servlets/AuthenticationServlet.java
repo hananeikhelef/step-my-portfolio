@@ -46,7 +46,8 @@ public class AuthenticationServlet extends HttpServlet {
       response.setContentType("application/json");
       response.getWriter().println(json);
 
-    } else {
+    } 
+    if (!userService.isUserLoggedIn()) {
       String urlToRedirectToAfterUserLogsIn = "/contact.html";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 

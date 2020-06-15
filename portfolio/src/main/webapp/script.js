@@ -66,15 +66,15 @@ async function comment() {
 
     const sign_in = document.querySelector("#button");
     
-    if(respone.status === 200){ // sends user to log in
-          sign_in.href=url[0];
+    if(respone.status === 200){ 
+        sign_in.href = url[0];
     }
-    else if(respone.status === 403){ //  redirect user to contact page
-        sign_in.href = url[0];                                     
+    else if(respone.status === 403){ 
+        sign_in.href = url[0];                               
     }
 }
 
 window.onload = function(){
     getData();
-     comment()
+    comment();
 }
