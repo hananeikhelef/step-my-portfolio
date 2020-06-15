@@ -72,7 +72,10 @@ public class DataServlet extends HttpServlet {
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
-    if (userService.isUserLoggedIn()) {
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect("/contact.html");
+      return;
+    } 
       String content = request.getParameter("content");
       long timestamp = System.currentTimeMillis();
       String email = userService.getCurrentUser().getEmail();
@@ -86,11 +89,6 @@ public class DataServlet extends HttpServlet {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(messageEntity);
       response.sendRedirect("/contact.html");
-
-
-    } else {
-      response.sendRedirect("/contact.html");
-      return;
-    }
+    
   }
 }

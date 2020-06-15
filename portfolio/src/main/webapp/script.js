@@ -68,9 +68,11 @@ async function comment() {
     
     if(respone.status === 200){ 
         sign_in.href = url[0];
+        sign_in.innerText = "signed out"; 
     }
     else if(respone.status === 403){ 
-        sign_in.href = url[0];                               
+        sign_in.href = url[0];          
+        sign_in.innerText = "signed in";                      
     }
 }
 
