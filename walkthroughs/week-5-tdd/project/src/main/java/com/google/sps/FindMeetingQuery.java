@@ -13,6 +13,14 @@
 // limitations under the License.
 
 package com.google.sps;
+import com.google.sps.TimeRange;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Arrays;
+import java.util.Set;
 
 import java.util.Collection;
 
