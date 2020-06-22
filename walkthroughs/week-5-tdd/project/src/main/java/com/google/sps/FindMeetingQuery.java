@@ -25,7 +25,23 @@ import java.util.Set;
 import java.util.Collection;
 
 public final class FindMeetingQuery {
+
+  /**
+   * A comparator for sorting ranges by their start time in ascending order.
+   */
+  public class SortEvents implements  Comparator<Event> {
+      @Override
+      public int compare(Event x, Event y){
+          return TimeRange.ORDER_BY_START.compare(x.getWhen(), y.getWhen());
+      }
+  }
+
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+      List timeSlots = new ArrayList<>();
+      int variable = TimeRange.START_OF_DAY;
+      ArrayList<Event>  evenements = new ArrayList<>(events);
+      SortEvents sorting = new SortEvents();
+      Collections.sort(evenements, sorting);
+      
   }
 }
