@@ -23,39 +23,45 @@ import java.util.stream.*;
 import java.util.Collection;
 
 public final class FindMeetingQuery {
+
+    // The algorithm adds timeranges as we go through the events starting from the start day
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
 
-      Collection<TimeRange> timeSlots = new ArrayList();
-        long duration = request.getDuration();
-        int start = TimeRange.getTimeInMinutes(0, 0);
-        int end = TimeRange.getTimeInMinutes(0, 0);
-        int lastEnd = TimeRange.getTimeInMinutes(0, 0);
+        Collection<TimeRange> timeSlots = new ArrayList();
+        int startTime= TimeRange.getTimeInMinutes(0, 0);
+        int endTime = TimeRange.getTimeInMinutes(0, 0);
+        int timeTrack = TimeRange.getTimeInMinutes(0, 0);
 
-         List<TimeRange> eventTimeRanges = events.stream().filter(event -> event.getAttendees().stream().anyMatch(attendee -> request.getAttendees().contains(attendee)))
-                .map(e -> e.getWhen())
+        // check for invalid duration
+        if(request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
+            return timeSlots;
+        }
+
+        // sort all the time ranges and add  to the list the required attendees in the meeting request
+        List<TimeRange> eventTimeRanges = events.stream().filter(event -> event.getAttendees().stream().anyMatch(attendee -> request.getAttendees().contains(attendee)))
+                .map(i -> i.getWhen())
                 .collect(Collectors.toList());
                 
         Collections.sort(eventTimeRanges, TimeRange.ORDER_BY_START);
-         if(request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
-            return timeSlots;
-        }
+
+       // whenever no schedulued events exists, we can schedule in any slot  
         if (eventTimeRanges.size() == 0){
             timeSlots.add(TimeRange.fromStartEnd(TimeRange.START_OF_DAY,TimeRange.END_OF_DAY,true));
         }
         else {
             for (TimeRange event: eventTimeRanges) {
-                end = event.start();
-                if (end-start >= duration) {
-                    timeSlots.add(TimeRange.fromStartEnd(start,end,false));
+                endTime = event.start();
+                if (endTime-startTime >= request.getDuration()) {
+                    timeSlots.add(TimeRange.fromStartEnd(startTime,endTime,false));
                 }
-                start = event.end();
-                 if (event.end() > lastEnd) {
-                    lastEnd = event.end();
+                startTime = event.end();
+                 if (event.end() > timeTrack) {
+                    timeTrack = event.end();
                 }
             }
             // Add the last event if applicable.
-            if (TimeRange.END_OF_DAY - lastEnd >= duration){
-                timeSlots.add(TimeRange.fromStartEnd(lastEnd,TimeRange.END_OF_DAY,true));
+            if (TimeRange.END_OF_DAY - timeTrack >= request.getDuration()){
+                timeSlots.add(TimeRange.fromStartEnd(timeTrack,TimeRange.END_OF_DAY,true));
             }
         }
         return timeSlots;
