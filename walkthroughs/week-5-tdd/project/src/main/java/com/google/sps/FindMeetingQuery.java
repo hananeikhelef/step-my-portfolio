@@ -37,11 +37,29 @@ public final class FindMeetingQuery {
   }
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-      List timeSlots = new ArrayList<>();
+      ArrayList<TimeRange> timeSlots = new ArrayList<>();
       int variable = TimeRange.START_OF_DAY;
       ArrayList<Event>  evenements = new ArrayList<>(events);
       SortEvents sorting = new SortEvents();
       Collections.sort(evenements, sorting);
-      
+
+      for(Event i: evenements) {
+         Set<String> eventDict = new HashSet<>(i.getAttendees());
+         eventDict.retainAll(request.getAttendees());
+         if(eventDict.size() < 1){
+             continue;
+         }
+
+         if(i.getWhen().start() > variable){
+             if((int)request.getDuration()<= ( i.getWhen().start()-variable)){
+                 timeSlots.add( i.getWhen().fromStartEnd(variable,  i.getWhen().start(), false));
+            }
+         }
+        variable = Math.max( i.getWhen().end(),variable);
+      }
+       if((int)request.getDuration() <= (TimeRange.END_OF_DAY-variable)){
+           timeSlots.add(TimeRange.fromStartEnd(variable, TimeRange.END_OF_DAY,true));
+       }
+       return timeSlots;
   }
 }
