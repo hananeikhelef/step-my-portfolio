@@ -55,7 +55,7 @@ public final class FindMeetingQuery {
                     timeSlots.add(TimeRange.fromStartEnd(startTime,endTime,false));
                 }
                 startTime = event.end();
-                 if (event.end() > timeTrack) {
+                if (event.end() > timeTrack) {
                     timeTrack = event.end();
                 }
             }
