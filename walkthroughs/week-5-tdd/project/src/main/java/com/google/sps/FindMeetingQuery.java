@@ -43,23 +43,25 @@ public final class FindMeetingQuery {
       SortEvents sorting = new SortEvents();
       Collections.sort(evenements, sorting);
 
-      for(Event i: evenements) {
-         Set<String> eventDict = new HashSet<>(i.getAttendees());
+      for(Event event: evenements) {
+         Set<String> eventDict = new HashSet<>(event.getAttendees());
          eventDict.retainAll(request.getAttendees());
          if(eventDict.size() < 1){
              continue;
          }
 
-         if(i.getWhen().start() > variable){
-             if((int)request.getDuration()<= ( i.getWhen().start()-variable)){
-                 timeSlots.add( i.getWhen().fromStartEnd(variable,  i.getWhen().start(), false));
-            }
+         if(event.getWhen().start() > TimeRange.START_OF_DAY){
+              if((int)request.getDuration() <= (event.getWhen().start()-(variable))){
+                 timeSlots.add( event.getWhen().fromStartEnd(variable,  event.getWhen().start(), false));
+             }
          }
-        variable = Math.max( i.getWhen().end(),variable);
+
+        variable = Math.max(event.getWhen().end(),variable);
       }
        if((int)request.getDuration() <= (TimeRange.END_OF_DAY-variable)){
            timeSlots.add(TimeRange.fromStartEnd(variable, TimeRange.END_OF_DAY,true));
        }
+
        return timeSlots;
   }
 }
