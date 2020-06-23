@@ -29,7 +29,7 @@ public final class FindMeetingQuery {
   /**
    * A comparator for sorting ranges by their start time in ascending order.
    */
-  public class SortEvents implements  Comparator<Event> {
+  public class CompareEvents implements  Comparator<Event> {
       @Override
       public int compare(Event x, Event y){
           return TimeRange.ORDER_BY_START.compare(x.getWhen(), y.getWhen());
@@ -38,30 +38,35 @@ public final class FindMeetingQuery {
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
       ArrayList<TimeRange> timeSlots = new ArrayList<>();
-      int variable = TimeRange.START_OF_DAY;
-      ArrayList<Event>  evenements = new ArrayList<>(events);
-      SortEvents sorting = new SortEvents();
-      Collections.sort(evenements, sorting);
+      
+      //  get time in minutes 
+      int timeInMinutes = TimeRange.START_OF_DAY;
+      
+      ArrayList<Event>  allEvents = new ArrayList<>(events);
+      // sort the event list
+      Collections.sort(allEvents,  new CompareEvents());
 
-      for(Event event: evenements) {
-         Set<String> eventDict = new HashSet<>(event.getAttendees());
-         eventDict.retainAll(request.getAttendees());
-         if(eventDict.size() < 1){
-             continue;
-         }
+      for(Event event: allEvents) {
+          //  a list of all attendees
+         HashSet<String> attendees = new HashSet<>(event.getAttendees());
+         // remove all the HashSet's elements that are not contained in the specified collection 
+         attendees.retainAll(request.getAttendees());
 
+         if(attendees.size() < 1 ) continue; 
+
+        // get event timing and compare it with the duraiton 
          if(event.getWhen().start() > TimeRange.START_OF_DAY){
-              if((int)request.getDuration() <= (event.getWhen().start()-(variable))){
-                 timeSlots.add( event.getWhen().fromStartEnd(variable,  event.getWhen().start(), false));
+              if(((int)request.getDuration() + timeInMinutes) <= event.getWhen().start()){
+                  // if the meeting time and the event are long enough add them to the time slots
+                 timeSlots.add( event.getWhen().fromStartEnd(timeInMinutes,  event.getWhen().start(), false));
              }
          }
-
-        variable = Math.max(event.getWhen().end(),variable);
+         //  choose the longest timing between the start and the end of the day
+        timeInMinutes = Math.max(event.getWhen().end(),timeInMinutes);
       }
-       if((int)request.getDuration() <= (TimeRange.END_OF_DAY-variable)){
-           timeSlots.add(TimeRange.fromStartEnd(variable, TimeRange.END_OF_DAY,true));
+       if((int)request.getDuration() + timeInMinutes <= TimeRange.END_OF_DAY){
+           timeSlots.add(TimeRange.fromStartEnd(timeInMinutes, TimeRange.END_OF_DAY,true));
        }
-
        return timeSlots;
   }
 }
