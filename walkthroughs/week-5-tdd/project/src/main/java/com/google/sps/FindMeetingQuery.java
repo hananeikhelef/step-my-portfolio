@@ -37,10 +37,10 @@ public final class FindMeetingQuery {
         }
 
         List<TimeRange> eventTimeRanges = getEventTimeRanges(events,request.getAllAttendees());
-        Collection<TimeRange> lookbook = getMeetingRanges(eventTimeRanges,request.getDuration());
+        Collection<TimeRange> meetingRanges = getMeetingRanges(eventTimeRanges,request.getDuration());
 
        // whenever no schedulued events exists, we can schedule in any slot  
-        if (lookbook.isEmpty() && !request.getAllAttendees().isEmpty()){
+        if (meetingRanges.isEmpty() && !request.getAllAttendees().isEmpty()){
             List<TimeRange> blockedTimeRanges = 
                 getEventTimeRanges(events, request.getAttendees());
             Collection<TimeRange> meetingTime = 
@@ -48,7 +48,7 @@ public final class FindMeetingQuery {
             return meetingTime;
         }
         else {
-            return lookbook;
+            return meetingRanges;
         }
   }
     // The algorithm adds timeranges as we go through the events starting from the start day
@@ -65,12 +65,12 @@ public final class FindMeetingQuery {
 
   public Collection<TimeRange> getMeetingRanges(List<TimeRange> eventTimeRange, long duration){
 
-            Collection<TimeRange> timeSlots = new ArrayList();
-            int startTime = TimeRange.getTimeInMinutes(0, 0);
-            int endTime = TimeRange.getTimeInMinutes(0, 0);
+        Collection<TimeRange> timeSlots = new ArrayList();
+        int startTime = TimeRange.getTimeInMinutes(0, 0);
+        int endTime = TimeRange.getTimeInMinutes(0, 0);
 
-            for (TimeRange event: eventTimeRange) {
-                endTime = event.start();
+        for (TimeRange event: eventTimeRange) {
+            endTime = event.start();
                 if (endTime-startTime >= duration) {
                     timeSlots.add(TimeRange.fromStartEnd(startTime,endTime,false));
                 }

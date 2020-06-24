@@ -294,7 +294,7 @@ public final class FindMeetingQueryTest {
   }
   
   @Test
-  public void optionalAttendeeIsConsidered() {
+  public void optionalAttendee() {
     // Based on everyAttendeeIsConsidered, add an optional attendee C with an
     // event such that one or more valid time ranges with all attendees can be 
     // returned.
@@ -313,7 +313,7 @@ public final class FindMeetingQueryTest {
             Arrays.asList(PERSON_C)));
 
     MeetingRequest request =
-        new MeetingRequest(Arrays.asList(PERSON_A, PERSON_B), DURATION_30_MINUTES);
+        new MeetingRequest(Arrays.asList(PERSON_B,PERSON_A), DURATION_30_MINUTES);
     request.addOptionalAttendee(PERSON_C);
 
     Collection<TimeRange> actual = query.query(events, request);
