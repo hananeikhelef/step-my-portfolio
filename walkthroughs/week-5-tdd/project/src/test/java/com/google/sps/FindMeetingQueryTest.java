@@ -274,8 +274,15 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
   @Test
-  public void firstTest(){
-      Collection<Event> events = Arrays.asList(
+  public void notEnoughOptionalAttendee(){
+    // Have one person, but make it so that there is not enough attendees at any point in the day to
+    // have the meeting.
+    //
+    // Events  : |--A-----| |-----A----|
+    // Day     : |---------------------|
+    // Options :
+
+    Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
             Arrays.asList(PERSON_A)),
         new Event("Event 2", TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true),
@@ -294,7 +301,7 @@ public final class FindMeetingQueryTest {
   }
   
   @Test
-  public void optionalAttendee() {
+  public void everyOptionalAttendeeConsidered() {
     // Based on everyAttendeeIsConsidered, add an optional attendee C with an
     // event such that one or more valid time ranges with all attendees can be 
     // returned.
