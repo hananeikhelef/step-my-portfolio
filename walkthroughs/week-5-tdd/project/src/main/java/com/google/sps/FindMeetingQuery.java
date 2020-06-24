@@ -38,7 +38,9 @@ public final class FindMeetingQuery {
         }
 
         // sort all the time ranges and add  to the list the required attendees in the meeting request
-        List<TimeRange> eventTimeRanges = events.stream().filter(event -> event.getAttendees().stream().anyMatch(attendee -> request.getAttendees().contains(attendee)))
+        List<TimeRange> eventTimeRanges = 
+                events.stream().filter(event -> event.getAttendees().stream()
+                .anyMatch(attendee -> request.getAttendees().contains(attendee)))
                 .map(i -> i.getWhen())
                 .collect(Collectors.toList());
                 
@@ -47,6 +49,7 @@ public final class FindMeetingQuery {
        // whenever no schedulued events exists, we can schedule in any slot  
         if (eventTimeRanges.size() == 0){
             timeSlots.add(TimeRange.fromStartEnd(TimeRange.START_OF_DAY,TimeRange.END_OF_DAY,true));
+            return timeSlots;
         }
         else {
             for (TimeRange event: eventTimeRanges) {
