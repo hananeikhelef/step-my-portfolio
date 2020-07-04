@@ -60,6 +60,20 @@ function deleteMessage(message) {
   fetch('/delete-data', {method: 'POST', body: params});
 }
 
+async function comment() {
+    const respone = await fetch('/authentication');
+    const url = await respone.json(); 
+
+    const sign_in = document.querySelector("#button");
+    
+    if(respone.status === 200){ 
+        sign_in.href = url[0];
+        sign_in.innerText = "signed out"; 
+    }
+    else if(respone.status === 403){ 
+        sign_in.href = url[0];          
+        sign_in.innerText = "signed in";                      
+    }
 /** Creates a map and adds it to the page. */
 function createMap() {
   const map = new google.maps.Map(
@@ -69,5 +83,6 @@ function createMap() {
 
 window.onload = function(){
     getData();
+    comment();
     createMap();
 }

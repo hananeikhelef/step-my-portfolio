@@ -14,13 +14,9 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
-import java.util.ArrayList;
-import java.io.IOException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -28,6 +24,15 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.sps.data.Message;
+import com.google.sps.servlets.AuthenticationServlet;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns comments from server */
 @WebServlet("/data")
@@ -66,18 +71,24 @@ public class DataServlet extends HttpServlet {
    /** doPost adds new messages to server data and stores it*/
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect("/contact.html");
+      return;
+    } 
       String content = request.getParameter("content");
       long timestamp = System.currentTimeMillis();
+      String email = userService.getCurrentUser().getEmail();
+
 
       Entity messageEntity = new Entity("Message");
       messageEntity.setProperty("content", content);
       messageEntity.setProperty("timestamp", timestamp);
+      messageEntity.setProperty("userEmail", email);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      
       datastore.put(messageEntity);
-
-    // Redirect back to the contact page.
-    response.sendRedirect("/contact.html");
+      response.sendRedirect("/contact.html");
+    
   }
 }

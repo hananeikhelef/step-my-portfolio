@@ -35,26 +35,28 @@ public class AuthenticationServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail(); // get user's email
-      String urlToRedirectToAfterUserLogsOut = "/";
+      String urlToRedirectToAfterUserLogsOut = "/contact.html";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut); // redirect to contact page
 
-      String[] array = {userEmail, logoutUrl};
+      String[] array = {logoutUrl, userEmail};
 
       response.setStatus(200); // request recived 
-      Gson gson = new Gson();
-      String json = gson.toJson(array);
+      String json = new Gson().toJson(array);
 
       response.setContentType("application/json");
       response.getWriter().println(json);
 
-    } else {
-      String urlToRedirectToAfterUserLogsIn = "/";
+    } 
+    if (!userService.isUserLoggedIn()) {
+      String urlToRedirectToAfterUserLogsIn = "/contact.html";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
-      response.setStatus(401); //401 Unauthorized
+      String[] array = {loginUrl};
+
+      response.setStatus(403); //401 Unauthorized
       
       Gson gson = new Gson();
-      String json = gson.toJson(loginUrl);
+      String json = gson.toJson(array);
 
       response.setContentType("application/json");
       response.getWriter().println(json);
