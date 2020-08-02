@@ -273,6 +273,7 @@ public final class FindMeetingQueryTest {
 
     Assert.assertEquals(expected, actual);
   }
+  
   @Test
   public void notEnoughOptionalAttendee(){
     // Have one person, but make it so that there is not enough attendees at any point in the day to
