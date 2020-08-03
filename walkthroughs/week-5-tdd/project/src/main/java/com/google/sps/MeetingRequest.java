@@ -57,8 +57,9 @@ public final class MeetingRequest {
       optional_attendees.add(attendee);
     }
   }
-   /**
-   * Returns the duration of the meeting in minutes.
+  
+  /**
+   * Returns a copy of all the people requested this meeting.
    */
   public Collection<String> getAllAttendees() {
       Collection<String> allAttendees = new HashSet<>();

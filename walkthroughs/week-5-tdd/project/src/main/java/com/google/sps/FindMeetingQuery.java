@@ -40,6 +40,10 @@ public final class FindMeetingQuery {
         Collection<TimeRange> meetingRanges = getMeetingRanges(eventTimeRanges,request.getDuration());
 
        // whenever no schedulued events exists, we can schedule in any slot  
+       // If there are no time ranges that work for all attendees, get the time
+       // ranges that work for only the mandatory attendees.
+       // In the case that there are optional attendees but no mandatory attendees, 
+       // treat the optional attendees as the mandatory attendees
         if (meetingRanges.isEmpty() && !request.getAllAttendees().isEmpty()){
             List<TimeRange> blockedTimeRanges = 
                 getEventTimeRanges(events, request.getAttendees());
@@ -53,7 +57,7 @@ public final class FindMeetingQuery {
   }
     // The algorithm adds timeranges as we go through the events starting from the start day
   public List<TimeRange> getEventTimeRanges(Collection<Event> events, Collection<String> request){
-              // sort all the time ranges and add  to the list the required attendees in the meeting request
+        // sort all the time ranges and add  to the list the required attendees in the meeting request
         List<TimeRange> eventTimeRanges = 
                 events.stream().filter(event -> event.getAttendees().stream()
                 .anyMatch(attendee -> request.contains(attendee)))
@@ -71,17 +75,17 @@ public final class FindMeetingQuery {
 
         for (TimeRange event: eventTimeRange) {
             endTime = event.start();
-                if (endTime-startTime >= duration) {
-                    timeSlots.add(TimeRange.fromStartEnd(startTime,endTime,false));
-                }
-                if (event.end() > startTime) {
-                    startTime = event.end();
-                }
+            if (endTime-startTime >= duration) {
+                timeSlots.add(TimeRange.fromStartEnd(startTime,endTime,false));
             }
-            // Add the last event if applicable.
-            if (TimeRange.END_OF_DAY - startTime >= duration){
-                timeSlots.add(TimeRange.fromStartEnd(startTime,TimeRange.END_OF_DAY,true));
+            if (event.end() > startTime) {
+                startTime = event.end();
             }
-            return timeSlots;
-  }
+        }
+        // Add the last event if applicable.
+        if (TimeRange.END_OF_DAY - startTime >= duration){
+            timeSlots.add(TimeRange.fromStartEnd(startTime,TimeRange.END_OF_DAY,true));
+        }
+        return timeSlots;
+    }
 }

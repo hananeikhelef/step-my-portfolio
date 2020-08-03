@@ -102,7 +102,6 @@ class TimeRange {
   constructor(start, duration) {
     this.start = start;
     this.duration = duration;
-    this.optional_attendees = [];
   }
 
   getStartTime() {
