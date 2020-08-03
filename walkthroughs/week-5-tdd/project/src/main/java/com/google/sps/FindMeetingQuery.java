@@ -32,7 +32,7 @@ public final class FindMeetingQuery {
         int endTime = TimeRange.getTimeInMinutes(0, 0);
 
         // check for invalid duration
-        if(request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
+        if((request.getDuration() > TimeRange.WHOLE_DAY.duration()) || request.getAllAttendees().isEmpty() ) {
             return timeSlots;
         }
 
@@ -44,7 +44,8 @@ public final class FindMeetingQuery {
        // ranges that work for only the mandatory attendees.
        // In the case that there are optional attendees but no mandatory attendees, 
        // treat the optional attendees as the mandatory attendees
-        if (meetingRanges.isEmpty() && !request.getAllAttendees().isEmpty()){
+       
+        if (meetingRanges.isEmpty()) {
             List<TimeRange> blockedTimeRanges = 
                 getEventTimeRanges(events, request.getAttendees());
             Collection<TimeRange> meetingTime = 
@@ -55,7 +56,8 @@ public final class FindMeetingQuery {
             return meetingRanges;
         }
     }
-    // The algorithm adds timeranges as we go through the events starting from the start day
+
+  // The algorithm adds timeranges as we go through the events starting from the start day
   public List<TimeRange> getEventTimeRanges(Collection<Event> events, Collection<String> request){
         // sort all the time ranges and add  to the list the required attendees in the meeting request
         List<TimeRange> eventTimeRanges = 
@@ -67,7 +69,12 @@ public final class FindMeetingQuery {
         Collections.sort(eventTimeRanges, TimeRange.ORDER_BY_START);
         return eventTimeRanges;
     } 
-
+    
+  /**
+   * Returns a copy of all the people requested this meeting.
+   * Function that returns all valid time ranges based on a list of blocked time ranges
+   * Approach: start from start of day, and add available timeranges as we traverse through the events' timerange
+   */
   public Collection<TimeRange> getMeetingRanges(List<TimeRange> eventTimeRange, long duration){
 
         Collection<TimeRange> timeSlots = new ArrayList();
