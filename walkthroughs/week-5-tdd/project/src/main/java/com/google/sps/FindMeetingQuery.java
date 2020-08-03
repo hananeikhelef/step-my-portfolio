@@ -32,7 +32,7 @@ public final class FindMeetingQuery {
         int endTime = TimeRange.getTimeInMinutes(0, 0);
 
         // check for invalid duration
-        if((request.getDuration() > TimeRange.WHOLE_DAY.duration()) || request.getAllAttendees().isEmpty() ) {
+        if(request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
             return timeSlots;
         }
 
@@ -45,7 +45,7 @@ public final class FindMeetingQuery {
        // In the case that there are optional attendees but no mandatory attendees, 
        // treat the optional attendees as the mandatory attendees
        
-        if (meetingRanges.isEmpty()) {
+        if (meetingRanges.isEmpty() && request.getAllAttendees().isEmpty()) {
             List<TimeRange> blockedTimeRanges = 
                 getEventTimeRanges(events, request.getAttendees());
             Collection<TimeRange> meetingTime = 
