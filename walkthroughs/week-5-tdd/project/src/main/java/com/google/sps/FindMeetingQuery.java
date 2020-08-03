@@ -54,18 +54,19 @@ public final class FindMeetingQuery {
         else {
             return meetingRanges;
         }
-  }
+    }
     // The algorithm adds timeranges as we go through the events starting from the start day
   public List<TimeRange> getEventTimeRanges(Collection<Event> events, Collection<String> request){
         // sort all the time ranges and add  to the list the required attendees in the meeting request
         List<TimeRange> eventTimeRanges = 
-                events.stream().filter(event -> event.getAttendees().stream()
+        events.stream()
+            .filter(event -> event.getAttendees().stream()
                 .anyMatch(attendee -> request.contains(attendee)))
-                .map(i -> i.getWhen())
-                .collect(Collectors.toList());
+            .map(i -> i.getWhen())
+            .collect(Collectors.toList());
         Collections.sort(eventTimeRanges, TimeRange.ORDER_BY_START);
         return eventTimeRanges;
-  } 
+    } 
 
   public Collection<TimeRange> getMeetingRanges(List<TimeRange> eventTimeRange, long duration){
 
