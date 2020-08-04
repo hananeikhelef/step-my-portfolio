@@ -39,12 +39,10 @@ public final class FindMeetingQuery {
         List<TimeRange> eventTimeRanges = getEventTimeRanges(events,request.getAllAttendees());
         Collection<TimeRange> meetingRanges = getMeetingRanges(eventTimeRanges,request.getDuration());
 
-       // whenever no schedulued events exists, we can schedule in any slot  
        // If there are no time ranges that work for all attendees, get the time
        // ranges that work for only the mandatory attendees.
        // In the case that there are optional attendees but no mandatory attendees, 
        // treat the optional attendees as the mandatory attendees
-       
         if (meetingRanges.isEmpty() && request.getAllAttendees().isEmpty()) {
             List<TimeRange> blockedTimeRanges = 
                 getEventTimeRanges(events, request.getAttendees());
